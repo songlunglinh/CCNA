@@ -1,0 +1,85 @@
+en
+conf t
+hostname R1
+enable secret password
+line con 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+exit
+int s0/0/0
+ip add 10.1.1.1 255.255.255.252
+no shutdown
+clock rate 128000
+bandwidth 128
+exit
+int loopback 1
+ip add 192.168.1.1 255.255.255.0
+end
+copy r s
+------------------------------------------------------------
+
+en
+conf t
+hostname R2
+enable secret password
+line con 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+exit
+int s0/0/0
+ip add 10.1.1.2 255.255.255.252
+no shutdown
+bandwidth 128
+exit
+int s0/0/1
+ip add 10.1.1.5 255.255.255.252
+no shutdown
+clock rate 128000
+bandwidth 128
+exit
+int loopback 1
+ip add 192.168.2.1 255.255.255.0
+end
+copy r s
+
+------------------------------------------------
+en
+conf t
+hostname R3
+enable secret password
+line con 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+exit
+int s0/0/1
+ip add 10.1.1.6 255.255.255.252
+no shutdown
+bandwidth 128
+exit
+int loopback 1
+ip add 192.168.3.1 255.255.255.0
+end
+copy r s
+
+Route 1
+ip route 0.0.0.0 0.0.0.0 s0/0/0
+
+Route 2
+ip route 192.168.1.0 255.255.255.0 s0/0/0
+ip route 192.168.3.0 255.255.255.0 s0/0/1
+ip route 10.1.1.8 255.255.255.252 s0/0/0
+ip route 10.1.1.8 255.255.255.252 s0/0/1
+
+Route 3
+ip route 192.168.1.0 255.255.255.0 s0/0/1
+ip route 192.168.2.0 255.255.255.0 s0/0/1
+ip route 10.1.1.0 255.255.255.252 s0/0/1
