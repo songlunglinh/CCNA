@@ -1,0 +1,91 @@
+//Config SW1,2,3
+enable
+config t
+hostname SW1
+int range fa0/1-24
+shutdown
+exit
+int range gi0/1-2
+shutdown
+exit
+enable secret hntu
+service password-encryption
+line con 0
+password cisco
+login
+logging synchronous
+exit
+line vty 0 4
+password cisco
+login
+logging synchronous 
+exit
+
+//Config SW1 
+int range fa0/1-5
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+exit 
+ip default-gateway 172.17.99.1
+vtp mode server
+vtp domain motherfucker.com
+vtp password darkness
+
+//Config SW2,3
+int range fa0/6-7
+no shutdown
+switchport mode access
+
+
+//Config SW2,3
+vtp mode client
+vtp domain motherfucker.com
+vtp password darkness
+
+
+//Config SW1
+vlan 10
+name VLAN10
+exit
+vlan 20
+name VLAN20
+exit
+
+//Config SW2,3
+int fa0/6
+switchport access vlan 10
+int fa0/7
+switchport access vlan 20
+
+//COnfig SW1
+int vlan 99
+ip add 172.17.99.11 255.255.255.0
+end
+
+//COnfig SW2
+int vlan 99
+ip add 172.17.99.12 255.255.255.0
+end
+
+//Conifg SW3
+int vlan 99
+ip add 172.17.99.13 255.255.255.0
+end
+
+
+//Config R1
+int fa0/0
+no shutdown 
+exit
+int fa0/0.10
+encapsulation dot1q 10
+ip add 192.168.10.1
+exit 
+int fa0/0.20
+encapsulation dot1q 20
+ip add 192.168.20.1
+exit 
+int fa0/0.99
+encapsulation dot1q 99 native
+ip add 172.17.99.1 
