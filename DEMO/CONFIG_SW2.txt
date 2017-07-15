@@ -1,0 +1,28 @@
+SL2
+en
+conf t
+int range fa0/1-20
+shutdown
+exit
+int range gi0/1-2
+shutdown
+exit
+int range fa0/1-5
+no shutdown
+switchport mode trunk
+exit
+
+vtp mode client
+vtp domain motherfucker.com
+vtp password fucker
+
+int fa0/10
+no shutdown
+switchport mode access 
+switchport access vlan 10
+exit
+int fa0/16
+no shutdown
+switchport mode access
+switchport access vlan 20
+
