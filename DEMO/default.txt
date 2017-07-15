@@ -1,0 +1,16 @@
+enable
+config t
+hostname SW1
+no ip domain-lookup
+service password-encryption
+enable secret hntu
+line con 0
+password darkness
+logging synchronous
+login
+exit
+line vty 0 4
+password darkness
+logging synchronous
+login
+

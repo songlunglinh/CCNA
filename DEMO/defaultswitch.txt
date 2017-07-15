@@ -1,0 +1,25 @@
+enable
+config t
+hostname SW1
+no ip domain-lookup
+service password-encryption
+enable secret hntu
+line con 0
+password darkness
+logging synchronous
+login
+exit
+line vty 0 4
+password darkness
+logging synchronous
+login
+exit
+int range fa0/1-24
+shutdown
+exit
+int range gi0/1-2
+shutdown
+exit
+int range fa0/1-5
+no shutdown
+switchport mode trunk
